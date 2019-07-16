@@ -3,6 +3,8 @@
 set -ex
 set -o pipefail
 
+sleep 180
+
 # Print some information about the testflinger host system
 cat /etc/os-release
 uname -a
