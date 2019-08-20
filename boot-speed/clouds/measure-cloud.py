@@ -241,7 +241,7 @@ def measure_instance(instance, datadir, reboots=1):
         '"$(date --date=tomorrow +%Y-%m-%dT%H:%M:%S%:z)"')
     instance.execute(
         "wget https://raw.githubusercontent.com/CanonicalLtd/"
-        "server-test-scripts/master/boot-speed/bootspeed.sh")
+        "server-test-scripts/master/boot-speed/bootspeed.sh </dev/null")
     instance.execute("chmod +x bootspeed.sh")
     instance.execute("rm -rf artifacts")
     outstr = instance.execute("./bootspeed.sh 2>&1")
