@@ -44,7 +44,8 @@ if [ -f /var/log/cloud-init.log ]; then
 fi
 
 cloud-init collect-logs
-tar cfz _var_lib_cloud.tar.gz /var/lib/cloud
+sudo tar cfz /tmp/_var_lib_cloud.tar.gz /var/lib/cloud
+cp /tmp/_var_lib_cloud.tar.gz .
 
 # Wait for systemd-analyze to exit with status 0 (success)
 # https://github.com/systemd/systemd/blob/1cae151/src/analyze/analyze.c#L279
