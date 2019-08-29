@@ -258,8 +258,8 @@ def measure_instance(instance, datadir, reboots=1):
         'sudo snap set system refresh.hold='
         '"$(date --date=tomorrow +%Y-%m-%dT%H:%M:%S%:z)"')
     instance.execute(
-        "wget https://raw.githubusercontent.com/CanonicalLtd/"
-        "server-test-scripts/master/boot-speed/bootspeed.sh")
+        "wget https://raw.githubusercontent.com/paride/"
+        "server-test-scripts/cloud-init-debug/boot-speed/bootspeed.sh")
     instance.execute("chmod +x bootspeed.sh")
 
     for nboot in range(0, reboots+1):
@@ -296,17 +296,18 @@ def measure_instance(instance, datadir, reboots=1):
             sys.exit(1)
 
         bootdir = "boot_" + str(nboot)
+        tarball = bootdir + ".tar.gz"
         print("Prepare the measurement data tarball")
         instance.execute("mv artifacts " + bootdir)
         instance.execute("tar czf " + bootdir + ".tar.gz " + bootdir)
         print("Pull the tarball")
-        instance.pull_file(bootdir + ".tar.gz", bootdir + ".tar.gz")
+        instance.pull_file(tarball, Path(datadir, tarball))
 
         if nboot == 0 and reboots:
             print("Refresh snaps")
             instance.execute("sudo snap refresh")
 
-    for tarball in glob.glob('boot_*.tar.gz'):
+    for tarball in glob.glob(str(datadir) + '/boot_*.tar.gz'):
         with tarfile.open(tarball, "r:gz") as tar:
             tar.extractall(path=datadir)
         os.unlink(tarball)
