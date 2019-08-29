@@ -43,6 +43,9 @@ if [ -f /var/log/cloud-init.log ]; then
     cp -v /var/log/cloud-init.log .
 fi
 
+cloud-init collect-logs
+tar cfz _var_lib_cloud.tar.gz /var/lib/cloud
+
 # Wait for systemd-analyze to exit with status 0 (success)
 # https://github.com/systemd/systemd/blob/1cae151/src/analyze/analyze.c#L279
 if ! timeout 20m sh -c "until systemd-analyze time; do sleep 20; done"; then
